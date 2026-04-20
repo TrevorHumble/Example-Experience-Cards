@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  DESCRIPTIVE ROWS TEMPLATE
+  ============================================================================
+  A reusable card template for university dashboards. Each row has an icon,
+  a title, and a short description line below the title. Use this pattern
+  when the link name alone isn't enough context (e.g., program names,
+  service categories, or abbreviations like "SI-PASS").
+
+  For simpler rows without descriptions, use the Simple Rows template.
+
+  DESIGNED FOR: iframe embedding in a portal framework (e.g., Anthology).
+  Fixed viewport height is assumed — the clamp() values on row padding
+  adjust spacing to fit the available vertical space without scroll bounce.
+
+  ACCESSIBILITY: Audited against WCAG 2.2 AA. See comments inline for
+  specific notes on alt text, focus styles, icon semantics, and the
+  "opens in new tab" pattern.
+  ============================================================================
+-->
+<html lang="en">
+<!--
+  ^^ LANGUAGE: Update the lang attribute if this template is used for a
+  non-English-speaking institution. Screen readers use this to select
+  pronunciation. Required for WCAG 3.1.1.
+-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Title</title>
+  <!--
+    TITLE: Replace "Card Title" above with the service name (e.g., "Academic
+    Support"). The parent portal framework typically displays the card title
+    separately in its chrome, but this <title> is still read by screen
+    readers when the iframe receives focus.
+  -->
+
+  <!-- ============================================================
+       FONTS — Public Sans for titles, Roboto for descriptions.
+       The description uses a lighter family to visually distinguish it
+       from the title without relying on color alone.
+       Swap these if your institution has brand-mandated typography.
+       ============================================================ -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@500&family=Roboto:wght@400&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- ============================================================
+       MATERIAL ICONS — Google's open-source icon set.
+       See icon names at https://fonts.google.com/icons
+       Used for both the row icons and the external-link indicator.
+       ============================================================ -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
+
+  <style>
+    /* --------------------------------------------------------------
+       RESET + BASE LAYOUT
+       -------------------------------------------------------------- */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Public Sans', sans-serif;
+      background: #fff;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --------------------------------------------------------------
+       BANNER IMAGE
+       Fills width, capped at 130px tall. object-fit: cover avoids
+       distortion on wide/narrow aspect ratios.
+       -------------------------------------------------------------- */
+    header img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 130px;
+      object-fit: cover;
+    }
+
+    /* --------------------------------------------------------------
+       LIST STRUCTURE
+       The <ul> fills remaining vertical space. Each <li> flex-grows
+       equally, so rows distribute evenly regardless of count.
+       -------------------------------------------------------------- */
+    ul {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      height: 100%;
+    }
+
+    li {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    li:last-child {
+      border-bottom: none;
+    }
+
+    /* --------------------------------------------------------------
+       LINK ROW — the tappable/clickable region for each item.
+       padding uses clamp() to shrink on short viewports and grow on
+       tall ones, preventing scroll bounce inside the iframe.
+       -------------------------------------------------------------- */
+    .link-row {
+      display: flex;
+      align-items: center;
+      padding: clamp(0.2rem, 1.5vh, 1rem) 1rem;
+      text-decoration: none;
+      color: #333; /* 12.6:1 on white — passes WCAG AAA */
+      font-weight: 500;
+      font-size: 16px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      gap: 1rem;
+    }
+
+    /* --------------------------------------------------------------
+       FOCUS STYLE — keyboard users must see where focus is.
+       2px outline meets WCAG 2.2 focus visibility expectations and
+       provides better contrast than a 1px line.
+       -------------------------------------------------------------- */
+    .link-row:focus {
+      outline: 2px solid #000;
+      outline-offset: 1px;
+    }
+
+    /* Respect browsers that distinguish focus-visible (keyboard) from
+       focus (mouse click). Falls back gracefully. */
+    .link-row:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    .link-row:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 1px;
+    }
+
+    /* --------------------------------------------------------------
+       HOVER STATE — subtle background + underline on title text.
+       Uses #f5f5f5 standard hover background for row-based layouts.
+       -------------------------------------------------------------- */
+    .link-row:hover {
+      background-color: #f5f5f5;
+      box-shadow: inset 0 -1px 0 #ccc;
+    }
+
+    .link-row:hover .link-text {
+      text-decoration: underline;
+    }
+
+    .link-text {
+      flex: 1;
+      white-space: normal;
+    }
+
+    /* --------------------------------------------------------------
+       DESCRIPTION LINE — sits under the title inside each row.
+       Color #5B5E65 passes 6.3:1 contrast on white (WCAG AA).
+       Smaller font size + lighter weight visually differentiates from
+       the title without relying on color alone (WCAG 1.4.1).
+       -------------------------------------------------------------- */
+    .link-description {
+      font-family: 'Roboto', sans-serif;
+      font-size: 15px;
+      color: #5B5E65;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+      font-weight: normal;
+    }
+
+    /* --------------------------------------------------------------
+       MATERIAL ICON — sits to the left of the title.
+       Color #5A5A5A passes 7:1 contrast on white (WCAG AAA).
+       -------------------------------------------------------------- */
+    .link-row .material-icons {
+      font-size: 35px;
+      color: #5A5A5A;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .link-row:hover .material-icons {
+      color: #000000;
+    }
+
+    /* --------------------------------------------------------------
+       EXTERNAL LINK INDICATOR
+       Small icon shown at the right of rows that open in a new tab.
+       WCAG 3.2.5 guidance: warn users before links open in new context.
+       -------------------------------------------------------------- */
+    .external-icon {
+      font-size: 18px !important;
+      color: #5B5E65; /* 6.3:1 on white — passes WCAG AA for large text and icons */
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* --------------------------------------------------------------
+       VISUALLY-HIDDEN UTILITY
+       For screen-reader-only text (e.g., "(opens in new tab)").
+       Removes from visual layout without hiding from assistive tech.
+       Standard pattern — do not replace with display:none.
+       -------------------------------------------------------------- */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    MAIN LANDMARK: wraps all interactive content so screen reader users
+    can jump straight to the card body via landmark navigation.
+  -->
+  <main>
+
+    <!--
+      ========================================================
+      BANNER IMAGE
+      ========================================================
+      REPLACE THE src BELOW with your institution's banner image URL.
+      Recommended dimensions: ~800×130px, SVG or optimized PNG/JPG.
+
+      ALT TEXT: Left empty (alt="") because this banner is decorative —
+      the card title and row labels already convey the service's purpose.
+      Empty alt lets screen readers skip the image rather than announcing
+      redundant information. This is a WCAG-compliant choice for purely
+      decorative imagery (WCAG 1.1.1, technique H67).
+
+      If your banner image CONTAINS text or conveys information not
+      available elsewhere on the card, replace alt="" with a descriptive
+      alternative (e.g., alt="Illustration of a student at a library desk").
+    -->
+    <header>
+      <img src="REPLACE-WITH-BANNER-URL.svg" alt="" />
+    </header>
+
+    <!--
+      ========================================================
+      LINK LIST
+      ========================================================
+      Each <li> is one row. Copy the <li>…</li> block to add more rows.
+      Typical card holds 3–4 rows; because each row has a description
+      line, more than 4 tends to feel cramped at the standard iframe
+      height.
+
+      FOR EACH ROW, CUSTOMIZE:
+        1. href="..."                 → Destination URL (see comment below)
+        2. <span> icon name           → Material Icon ligature (e.g., "school")
+                                         Browse: https://fonts.google.com/icons
+        3. link-text content          → User-visible title
+        4. link-description content   → Short supporting sentence
+
+      DESCRIPTION WRITING TIPS:
+        • Keep it to ONE line (roughly 40–60 characters) to avoid wrapping.
+        • Use sentence case, no trailing period — matches the established
+          voice of the MyUI Dashboard.
+        • Avoid repeating the title ("Tutoring: Tutoring help for students"
+          is redundant).
+
+      target="_blank" vs. same-tab:
+        • Use target="_blank" for EXTERNAL systems (different domain or app).
+        • Remove target="_blank" AND rel="noopener noreferrer" AND the
+          external-icon span + sr-only span if the link stays in the
+          parent portal.
+
+      rel="noopener noreferrer":
+        Required whenever target="_blank" is used. Prevents the new tab
+        from manipulating the opener window (security) and from leaking
+        the referrer to the destination (privacy).
+
+      aria-hidden="true" on icons:
+        Material Icons ligatures are decorative — the text next to them
+        is what actually labels the link. Hiding icons from screen readers
+        prevents them from reading "school" or "groups" as raw text.
+    -->
+    <ul>
+
+      <!-- ============ ROW 1 ============ -->
+      <li>
+        <a
+          class="link-row"
+          href="REPLACE-WITH-URL-1"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="material-icons" aria-hidden="true">groups</span>
+          <div>
+            <div class="link-text">First Link Title</div>
+            <div class="link-description">Short supporting description here</div>
+          </div>
+          <span class="material-icons external-icon" aria-hidden="true">open_in_new</span>
+          <span class="sr-only">(opens in new tab)</span>
+        </a>
+      </li>
+
+      <!-- ============ ROW 2 ============ -->
+      <li>
+        <a
+          class="link-row"
+          href="REPLACE-WITH-URL-2"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="material-icons" aria-hidden="true">school</span>
+          <div>
+            <div class="link-text">Second Link Title</div>
+            <div class="link-description">Short supporting description here</div>
+          </div>
+          <span class="material-icons external-icon" aria-hidden="true">open_in_new</span>
+          <span class="sr-only">(opens in new tab)</span>
+        </a>
+      </li>
+
+      <!-- ============ ROW 3 ============ -->
+      <li>
+        <a
+          class="link-row"
+          href="REPLACE-WITH-URL-3"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="material-icons" aria-hidden="true">menu_book</span>
+          <div>
+            <div class="link-text">Third Link Title</div>
+            <div class="link-description">Short supporting description here</div>
+          </div>
+          <span class="material-icons external-icon" aria-hidden="true">open_in_new</span>
+          <span class="sr-only">(opens in new tab)</span>
+        </a>
+      </li>
+
+    </ul>
+  </main>
+</body>
+</html>
