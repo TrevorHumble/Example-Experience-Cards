@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  BUTTON CARD TEMPLATE
+  ============================================================================
+  A reusable card template for university dashboards. Centered layout with
+  a banner image, a horizontal divider, a single call-to-action button, and
+  a short description below. Use this pattern when a card's purpose is to
+  drive users to ONE primary action (e.g., "Apply for Scholarships",
+  "Register Now", "Submit Your Thesis").
+
+  For cards with multiple links, use Simple Rows, Descriptive Rows, or
+  Grid Links instead.
+
+  DESIGNED FOR: iframe embedding in a portal framework (e.g., Anthology).
+  Content is vertically stacked; banner height is fixed at 165px.
+
+  ACCESSIBILITY: Audited against WCAG 2.2 AA. See inline comments for
+  specific notes on alt text, focus styles, and the "opens in new tab"
+  pattern.
+  ============================================================================
+-->
+<html lang="en">
+<!--
+  ^^ LANGUAGE: Update the lang attribute if this template is used for a
+  non-English-speaking institution. Screen readers use this to select
+  pronunciation. Required for WCAG 3.1.1.
+-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Title</title>
+  <!--
+    TITLE: Replace "Card Title" above with the service name. The parent
+    portal framework typically displays the card title separately in its
+    chrome, but this <title> is still read by screen readers when the
+    iframe receives focus.
+  -->
+
+  <!-- ============================================================
+       FONTS
+         Public Sans (500)       — general body text
+         Roboto Condensed (700)  — button label (uppercase, letter-spaced)
+         Roboto (400)            — description text
+       Swap these if your institution has brand-mandated typography.
+       ============================================================ -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@500&family=Roboto+Condensed:wght@700&family=Roboto:wght@400&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- ============================================================
+       MATERIAL ICONS — used only for the external-link indicator.
+       ============================================================ -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
+
+  <style>
+    /* --------------------------------------------------------------
+       BRAND TOKENS
+       Change --brand-accent to your institution's primary brand color.
+       This one variable controls the button hover state AND the divider
+       bar, so it's the fastest way to rebrand the template.
+       -------------------------------------------------------------- */
+    :root {
+      --brand-accent: #F1B300; /* REPLACE with your institution's brand color */
+      --ink-dark:     #323232; /* Divider + button border + button text */
+    }
+
+    /* --------------------------------------------------------------
+       RESET + BASE LAYOUT
+       -------------------------------------------------------------- */
+    body {
+      margin: 0;
+      font-family: 'Public Sans', sans-serif;
+      background: #fff;
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 1rem;
+    }
+
+    /* --------------------------------------------------------------
+       BANNER IMAGE
+       Fixed 165px-tall banner. object-fit: cover avoids distortion.
+       -------------------------------------------------------------- */
+    .card-image-wrapper {
+      width: 100%;
+      height: 165px;
+      overflow: hidden;
+    }
+
+    .card-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* --------------------------------------------------------------
+       DIVIDER BAR
+       Horizontal bar between banner and button — a signature element
+       of this pattern. 9px tall, brand-neutral dark ink color.
+       -------------------------------------------------------------- */
+    .divider {
+      width: 100%;
+      height: 9px;
+      background-color: var(--ink-dark);
+      margin: 0;
+    }
+
+    /* --------------------------------------------------------------
+       BUTTON
+       Uppercase label in Roboto Condensed. clamp() on font-size keeps
+       the label readable across viewport sizes without wrapping.
+       -------------------------------------------------------------- */
+    .button {
+      margin-top: 8px;
+      padding: 10px 16px;
+      background-color: white;
+      color: var(--ink-dark); /* 13.4:1 on white — passes WCAG AAA */
+      font-family: 'Roboto Condensed', sans-serif;
+      text-transform: uppercase;
+      font-size: clamp(0.85rem, 16px, 1.33rem);
+      font-weight: 700;
+      border: 1px solid var(--ink-dark);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 2px;
+      word-spacing: 2px;
+    }
+
+    .button:hover {
+      background-color: var(--brand-accent);
+      color: #000000;
+      border-color: var(--brand-accent);
+    }
+
+    .button:active {
+      background-color: var(--brand-accent);
+      transform: scale(0.96);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+    }
+
+    /* --------------------------------------------------------------
+       FOCUS STYLE — keyboard users must see where focus is.
+       2px outline meets WCAG 2.2 focus visibility expectations.
+       -------------------------------------------------------------- */
+    .button:focus {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
+    /* Distinguish focus-visible (keyboard) from focus (mouse click). */
+    .button:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    .button:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
+    /* --------------------------------------------------------------
+       EXTERNAL LINK INDICATOR
+       Small icon inside the button, right of the label.
+       WCAG 3.2.5: warn users before links open in a new context.
+       -------------------------------------------------------------- */
+    .button .external-icon {
+      font-size: 18px;
+    }
+
+    /* --------------------------------------------------------------
+       DESCRIPTION TEXT
+       Color #5B5E65 passes 6.3:1 contrast on white (WCAG AA).
+       -------------------------------------------------------------- */
+    .card-description {
+      font-family: 'Roboto', sans-serif;
+      font-size: 15px;
+      color: #5B5E65;
+      margin-top: 2px;
+      max-width: 90%;
+    }
+
+    /* --------------------------------------------------------------
+       VISUALLY-HIDDEN UTILITY
+       For screen-reader-only text (e.g., "(opens in new tab)").
+       -------------------------------------------------------------- */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    MAIN LANDMARK: wraps all interactive content so screen reader users
+    can jump straight to the card body via landmark navigation.
+  -->
+  <main>
+    <div class="card-body">
+
+      <!--
+        ========================================================
+        BANNER IMAGE
+        ========================================================
+        REPLACE THE src BELOW with your institution's banner image URL.
+        Recommended dimensions: ~800×165px, SVG or optimized PNG/JPG.
+
+        ALT TEXT: Left empty (alt="") because this banner is decorative —
+        the button label and description already convey the service's
+        purpose. Empty alt lets screen readers skip the image rather than
+        announcing redundant information. WCAG 1.1.1, technique H67.
+
+        If your banner image CONTAINS text or conveys information not
+        available elsewhere, replace alt="" with a descriptive alternative.
+      -->
+      <div class="card-image-wrapper">
+        <img
+          class="card-image"
+          src="REPLACE-WITH-BANNER-URL.svg"
+          alt=""
+        />
+      </div>
+
+      <!--
+        ========================================================
+        DIVIDER BAR
+        ========================================================
+        Decorative horizontal bar. No content, no accessibility concern.
+      -->
+      <div class="divider"></div>
+
+      <!--
+        ========================================================
+        CALL-TO-ACTION BUTTON
+        ========================================================
+        REPLACE THE href BELOW with your destination URL.
+        REPLACE THE button text with your action label (keep it short —
+        2–4 words works best with the uppercase letter-spacing treatment).
+
+        target="_blank":
+          Use for EXTERNAL systems (different domain or app).
+          If the link stays in the parent portal, remove target="_blank",
+          remove rel="noopener noreferrer", and remove the external-icon
+          and sr-only spans.
+
+        rel="noopener noreferrer":
+          Required whenever target="_blank" is used. Prevents the new tab
+          from manipulating the opener window (security) and from leaking
+          the referrer to the destination (privacy).
+
+        aria-hidden on external-icon:
+          Icon is decorative — the visible button label plus the
+          sr-only "(opens in new tab)" text convey the meaning.
+      -->
+      <a
+        class="button"
+        href="REPLACE-WITH-URL"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Button Label
+        <span class="material-icons external-icon" aria-hidden="true">open_in_new</span>
+        <span class="sr-only">(opens in new tab)</span>
+      </a>
+
+      <!--
+        ========================================================
+        DESCRIPTION TEXT
+        ========================================================
+        REPLACE the sentence below. 1–2 sentences works best; longer text
+        risks pushing content below the iframe viewport.
+      -->
+      <div class="card-description">
+        Short description of the service or action. Keep it to one or two sentences.
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>
